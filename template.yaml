@@ -41,6 +41,11 @@ Parameters:
     Default: "AWS::IAM::Policy,AWS::IAM::User,AWS::IAM::Role,AWS::IAM::Group"
     Type: String
 
+  GlobalResourceTypes:
+    Description: List of AWS resource types that are global and should not be recorded in non-home regions.
+    Default: "AWS::IAM::Policy,AWS::IAM::User,AWS::IAM::Role,AWS::IAM::Group"
+    Type: String
+
   ConfigRecorderDefaultRecordingFrequency:
     Description: Default Frequency of recording configuration changes.
     Default: CONTINUOUS
@@ -75,6 +80,7 @@ Metadata:
           - ConfigRecorderDefaultRecordingFrequency
           - ConfigRecorderDailyResourceTypes
           - ConfigRecorderDailyGlobalResourceTypes
+          - GlobalResourceTypes
 
 Resources:
   LambdaZipsBucket:
@@ -158,6 +164,7 @@ Resources:
           CONFIG_RECORDER_OVERRIDE_EXCLUDED_RESOURCE_LIST: !Ref ConfigRecorderExcludedResourceTypes
           CONFIG_RECORDER_OVERRIDE_INCLUDED_RESOURCE_LIST: !Ref ConfigRecorderIncludedResourceTypes
           CONFIG_RECORDER_DEFAULT_RECORDING_FREQUENCY: !Ref ConfigRecorderDefaultRecordingFrequency
+          GLOBAL_RESOURCE_TYPES: !Ref GlobalResourceTypes
           CONTROL_TOWER_HOME_REGION: !Ref "AWS::Region"
 
   ConsumerLambdaEventSourceMapping:
